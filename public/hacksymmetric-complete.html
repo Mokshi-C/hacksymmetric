@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacksymmetric 2025 - Health Technology Hackathon</title>
+    <meta name="description" content="Join Hacksymmetric 2025, the premier health technology hackathon. Innovate, collaborate, and transform healthcare through cutting-edge solutions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: 210 100% 50%;
+            --primary-foreground: 0 0% 100%;
+            --background: 222 47% 11%;
+            --foreground: 213 31% 91%;
+            --card: 224 37% 15%;
+            --card-foreground: 213 31% 91%;
+            --accent: 142 76% 36%;
+            --accent-foreground: 144 61% 20%;
+            --border: 216 34% 17%;
+            --input: 216 34% 17%;
+            --ring: 210 100% 50%;
+            --muted: 223 47% 11%;
+            --muted-foreground: 215.4 16.3% 56.9%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            transition: all 0.3s ease;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        nav.scrolled {
+            background: rgba(17, 24, 39, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: hsl(var(--foreground));
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: hsl(var(--primary));
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: hsl(var(--foreground));
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: hsl(var(--background));
+            border-bottom: 1px solid hsl(var(--border));
+            padding: 1rem;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem;
+            color: hsl(var(--foreground));
+            text-decoration: none;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(142 76% 36%));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid hsl(var(--border));
+            color: hsl(var(--foreground));
+        }
+
+        .btn-outline:hover {
+            background: hsl(var(--card));
+        }
+
+        /* Hero Section */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 1rem 2rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border: 1px solid hsl(var(--border));
+            border-radius: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid hsl(var(--border));
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            text-align: center;
+            color: hsl(var(--muted-foreground));
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-size: 1.125rem;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* Theme Cards */
+        .theme-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .theme-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: hsl(var(--border));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: hsl(var(--primary));
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px hsl(var(--primary));
+        }
+
+        /* Pricing Cards */
+        .pricing-card {
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border: 2px solid hsl(var(--primary));
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: hsl(var(--primary));
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 1rem 0;
+        }
+
+        .features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .check-icon {
+            color: hsl(var(--accent));
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: 0.5rem;
+            color: hsl(var(--foreground));
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Contact Cards */
+        .contact-card {
+            text-align: center;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: hsl(var(--primary));
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: hsl(var(--card));
+            padding: 3rem 1rem 1rem;
+            margin-top: 5rem;
+            border-top: 1px solid hsl(var(--border));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: hsl(var(--muted-foreground));
+            text-decoration: none;
+            display: block;
+            padding: 0.25rem 0;
+        }
+
+        .footer-links a:hover {
+            color: hsl(var(--primary));
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid hsl(var(--border));
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-content">
+            <div class="logo" onclick="scrollToSection('hero')">Hacksymmetric</div>
+            <ul class="nav-links">
+                <li><a onclick="scrollToSection('about')">About</a></li>
+                <li><a onclick="scrollToSection('themes')">Themes</a></li>
+                <li><a onclick="scrollToSection('timeline')">Timeline</a></li>
+                <li><a onclick="scrollToSection('pricing')">Pricing</a></li>
+                <li><a onclick="scrollToSection('registration')">Register</a></li>
+                <li><a onclick="scrollToSection('contact')">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a onclick="scrollToSection('about')">About</a>
+            <a onclick="scrollToSection('themes')">Themes</a>
+            <a onclick="scrollToSection('timeline')">Timeline</a>
+            <a onclick="scrollToSection('pricing')">Pricing</a>
+            <a onclick="scrollToSection('registration')">Register</a>
+            <a onclick="scrollToSection('contact')">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-bg">
+            <div class="floating-element" style="width: 400px; height: 400px; top: 10%; left: -10%;"></div>
+            <div class="floating-element" style="width: 300px; height: 300px; top: 50%; right: -5%; animation-delay: -5s;"></div>
+            <div class="floating-element" style="width: 200px; height: 200px; bottom: 10%; left: 20%; animation-delay: -10s;"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-tag">🚀 Health Tech Innovation</span>
+            <h1>
+                Welcome to<br>
+                <span class="text-gradient">Hacksymmetric 2025</span>
+            </h1>
+            <p class="hero-description">
+                Join the most exciting health technology hackathon of the year. Transform healthcare through innovation, collaboration, and cutting-edge technology.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('registration')">Register Now</button>
+                <button class="btn btn-outline" onclick="scrollToSection('about')">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About <span class="text-gradient">Hacksymmetric</span></h2>
+            <p class="section-description">
+                Hacksymmetric is more than just a hackathon—it's a movement to revolutionize healthcare through technology. Connect with innovators, build solutions, and make a lasting impact.
+            </p>
+            <div class="grid">
+                <div class="glass-card">
+                    <div class="theme-icon">💡</div>
+                    <h3 class="theme-title">Innovation</h3>
+                    <p>Push boundaries and create solutions that matter in healthcare technology.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="theme-icon">🤝</div>
+                    <h3 class="theme-title">Collaboration</h3>
+                    <p>Work with talented individuals from diverse backgrounds and expertise.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="theme-icon">🏆</div>
+                    <h3 class="theme-title">Recognition</h3>
+                    <p>Compete for prizes and gain recognition from industry leaders.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes Section -->
+    <section id="themes">
+        <div class="container">
+            <h2 class="section-title">Hackathon <span class="text-gradient">Themes</span></h2>
+            <p class="section-description">
+                Choose from exciting themes that address real-world healthcare challenges
+            </p>
+            <div class="grid grid-3">
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">🏥</div>
+                    <h3 class="theme-title">Patient Care</h3>
+                    <p>Enhance patient experiences and improve care delivery through innovative solutions.</p>
+                </div>
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">🧬</div>
+                    <h3 class="theme-title">Diagnostics</h3>
+                    <p>Develop AI-powered diagnostic tools for early disease detection and prevention.</p>
+                </div>
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">📱</div>
+                    <h3 class="theme-title">Digital Health</h3>
+                    <p>Create mobile and web applications for remote healthcare and telemedicine.</p>
+                </div>
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">🔬</div>
+                    <h3 class="theme-title">Research</h3>
+                    <p>Build tools to accelerate medical research and drug discovery.</p>
+                </div>
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">💊</div>
+                    <h3 class="theme-title">Pharmacy</h3>
+                    <p>Optimize medication management and improve pharmacy workflows.</p>
+                </div>
+                <div class="glass-card theme-card">
+                    <div class="theme-icon">🧠</div>
+                    <h3 class="theme-title">Mental Health</h3>
+                    <p>Develop solutions for mental health support and wellness tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline">
+        <div class="container">
+            <h2 class="section-title">Event <span class="text-gradient">Timeline</span></h2>
+            <p class="section-description">
+                Mark your calendars for an action-packed weekend
+            </p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card" style="margin-left: auto; width: 45%;">
+                        <h3 class="theme-title">Day 1 - Kickoff</h3>
+                        <p style="color: hsl(var(--primary)); font-weight: 600; margin-bottom: 0.5rem;">9:00 AM - 6:00 PM</p>
+                        <p>Registration, team formation, opening ceremony, and project ideation sessions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card" style="margin-right: auto; width: 45%;">
+                        <h3 class="theme-title">Day 1 - Evening</h3>
+                        <p style="color: hsl(var(--primary)); font-weight: 600; margin-bottom: 0.5rem;">6:00 PM - 11:59 PM</p>
+                        <p>Hacking begins! Work on your projects with mentor support.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card" style="margin-left: auto; width: 45%;">
+                        <h3 class="theme-title">Day 2 - Development</h3>
+                        <p style="color: hsl(var(--primary)); font-weight: 600; margin-bottom: 0.5rem;">12:00 AM - 2:00 PM</p>
+                        <p>Continue building, testing, and refining your solutions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card" style="margin-right: auto; width: 45%;">
+                        <h3 class="theme-title">Day 2 - Finals</h3>
+                        <p style="color: hsl(var(--primary)); font-weight: 600; margin-bottom: 0.5rem;">2:00 PM - 6:00 PM</p>
+                        <p>Project submissions, presentations, judging, and awards ceremony.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+        <div class="container">
+            <h2 class="section-title">Registration <span class="text-gradient">Packages</span></h2>
+            <p class="section-description">
+                Choose the package that best fits your needs
+            </p>
+            <div class="grid">
+                <div class="glass-card pricing-card">
+                    <div class="theme-icon">👤</div>
+                    <h3 class="theme-title">Solo Innovator</h3>
+                    <div class="price">₹299</div>
+                    <p style="color: hsl(var(--muted-foreground)); margin-bottom: 1rem;">Perfect for individual participants</p>
+                    <ul class="features">
+                        <li><span class="check-icon">✓</span> Full event access</li>
+                        <li><span class="check-icon">✓</span> Workshops & mentoring</li>
+                        <li><span class="check-icon">✓</span> Meals & refreshments</li>
+                        <li><span class="check-icon">✓</span> Swag kit</li>
+                        <li><span class="check-icon">✓</span> Certificate</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="scrollToSection('registration')">Choose Plan</button>
+                </div>
+                <div class="glass-card pricing-card popular">
+                    <span class="popular-badge">Most Popular</span>
+                    <div class="theme-icon">👥</div>
+                    <h3 class="theme-title">Team Package</h3>
+                    <div class="price">₹999</div>
+                    <p style="color: hsl(var(--muted-foreground)); margin-bottom: 1rem;">Best value for teams of 3-4</p>
+                    <ul class="features">
+                        <li><span class="check-icon">✓</span> All Solo features</li>
+                        <li><span class="check-icon">✓</span> Team workspace</li>
+                        <li><span class="check-icon">✓</span> Priority mentoring</li>
+                        <li><span class="check-icon">✓</span> API credits</li>
+                        <li><span class="check-icon">✓</span> Team swag</li>
+                        <li><span class="check-icon">✓</span> Networking events</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="scrollToSection('registration')">Choose Plan</button>
+                </div>
+                <div class="glass-card pricing-card">
+                    <div class="theme-icon">⭐</div>
+                    <h3 class="theme-title">VIP Experience</h3>
+                    <div class="price">₹1,499</div>
+                    <p style="color: hsl(var(--muted-foreground)); margin-bottom: 1rem;">Premium experience with extras</p>
+                    <ul class="features">
+                        <li><span class="check-icon">✓</span> All Team features</li>
+                        <li><span class="check-icon">✓</span> VIP seating</li>
+                        <li><span class="check-icon">✓</span> 1-on-1 mentoring</li>
+                        <li><span class="check-icon">✓</span> Premium swag</li>
+                        <li><span class="check-icon">✓</span> Exclusive workshops</li>
+                        <li><span class="check-icon">✓</span> Industry networking</li>
+                        <li><span class="check-icon">✓</span> Post-event support</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="scrollToSection('registration')">Choose Plan</button>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
+                <p style="font-weight: 600; color: hsl(var(--primary));">⚡ Limited spots available! Early bird discount ends soon.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="registration">
+        <div class="container">
+            <h2 class="section-title">Register <span class="text-gradient">Now</span></h2>
+            <p class="section-description">
+                Secure your spot at Hacksymmetric 2025
+            </p>
+            <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+                <form id="registrationForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+91 1234567890">
+                    </div>
+                    <div class="form-group">
+                        <label for="institution">Institution/Organization *</label>
+                        <input type="text" id="institution" name="institution" required placeholder="Your university or company">
+                    </div>
+                    <div class="form-group">
+                        <label for="package">Registration Package *</label>
+                        <select id="package" name="package" required>
+                            <option value="">Select a package</option>
+                            <option value="solo">Solo Innovator - ₹299</option>
+                            <option value="team">Team Package - ₹999</option>
+                            <option value="vip">VIP Experience - ₹1,499</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Experience Level *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select your experience</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="interests">Areas of Interest</label>
+                        <textarea id="interests" name="interests" rows="3" placeholder="Tell us about your interests in health tech..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Complete Registration</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Get in <span class="text-gradient">Touch</span></h2>
+            <p class="section-description">
+                Have questions? We're here to help!
+            </p>
+            <div class="grid">
+                <div class="glass-card contact-card">
+                    <div class="contact-icon">✉️</div>
+                    <h3 class="theme-title">Email</h3>
+                    <p><a href="mailto:info@hacksymmetric.com" style="color: hsl(var(--primary)); text-decoration: none;">info@hacksymmetric.com</a></p>
+                </div>
+                <div class="glass-card contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h3 class="theme-title">Phone</h3>
+                    <p><a href="tel:+911234567890" style="color: hsl(var(--primary)); text-decoration: none;">+91 123 456 7890</a></p>
+                </div>
+                <div class="glass-card contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h3 class="theme-title">Venue</h3>
+                    <p>Chennai Institute of Technology<br>Sarathy Nagar, Chennai</p>
+                </div>
+            </div>
+            <div style="margin-top: 3rem; text-align: center;">
+                <h3 class="theme-title">Join Our Community</h3>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-outline">Discord</a>
+                    <a href="#" class="btn btn-outline">LinkedIn</a>
+                    <a href="#" class="btn btn-outline">Twitter</a>
+                    <a href="#" class="btn btn-outline">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Hacksymmetric</h3>
+                    <p style="color: hsl(var(--muted-foreground));">Transforming healthcare through innovation and technology.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a onclick="scrollToSection('about')">About</a></li>
+                        <li><a onclick="scrollToSection('themes')">Themes</a></li>
+                        <li><a onclick="scrollToSection('timeline')">Timeline</a></li>
+                        <li><a onclick="scrollToSection('pricing')">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Code of Conduct</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Discord Community</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hacksymmetric. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll to section
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                // Close mobile menu if open
+                document.getElementById('mobileMenu').classList.remove('active');
+            }
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Here you would typically send the data to your backend
+            console.log('Form submitted:', data);
+            
+            // Show success message
+            alert('Registration successful! We will contact you soon with payment details.');
+            event.target.reset();
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.querySelector('.mobile-menu-btn');
+            
+            if (!menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
